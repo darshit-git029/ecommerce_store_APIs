@@ -1,0 +1,510 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "products and category API",
+    "description": "API for products data and category data ",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+
+  "paths": {
+    "/api/products": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Get all products",
+        "responses": {
+          "200": {
+            "description": "A list of products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/products"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Create a new product",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "The product title"
+                  },
+                  "price": {
+                    "type": "integer",
+                    "description": "The product price"
+                  },
+                  "category": {
+                    "type": "integer",
+                    "description": "The product category"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "The product description"
+                  },
+                  "quantity":{
+                    "type":"integer",
+                    "description":"quantity of product's"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The product image file"
+                  }
+                },
+                "required": [
+                  "title",
+                  "price",
+                  "category",
+                  "description",
+                  "quantity",
+                  "image"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The newly created product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/products"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/sort/{value}": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "summary": "sort product data",
+        "parameters": [
+          {
+            "name": "value",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": " sort product data ASC or DESC order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/products"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/limit/{no}": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "summary": "set limit to get products",
+        "parameters": [
+          {
+            "name": "no",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": " limited product to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/products"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/products/id/{id}": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Get Product by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the product to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/products"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        }
+      },
+
+      "put": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Update Product by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the product to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "The product title"
+                  },
+                  "price": {
+                    "type": "integer",
+                    "description": "The product price"
+                  },
+                  "category": {
+                    "type": "integer",
+                    "description": "The product category"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "The product description"
+                  }
+                },
+                "required": ["title", "price", "category", "description"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/products"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, object invalid"
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Delete Product by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the product to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product deleted successfully"
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        }
+      }
+    },
+
+    "/api/category": {
+      "get": {
+        "tags": [
+          "category"
+        ],
+        "summary": "Get all category",
+        "responses": {
+          "200": {
+            "description": "A list of category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/category"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "category"
+        ],
+        "summary": "Create a new category",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "categorieName": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id", "categorieName"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The newly created category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/category"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/category/id/{id}": {
+      "get": {
+        "tags": [
+          "category"
+        ],
+        "summary": "Get ctaegory by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the category to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/category"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "category"
+        ],
+        "summary": "Update category by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the category to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "categorieName": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id", "categorieName"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/category"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, object invalid"
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "category"
+        ],
+        "summary": "Delete category by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the category to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "category deleted successfully"
+          },
+          "404": {
+            "description": "category not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "products": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer"
+          },
+          "category": {
+            "type": "integer"
+          },
+          "description": {
+            "type": "string"
+          },
+          "quantity":{
+            "type":"integer"
+          },
+          "image": {
+            "type": "string"
+          }
+        }
+      },
+      "category": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "categorieName": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

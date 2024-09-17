@@ -1,0 +1,293 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Cart API",
+    "description": "API for cart-item data",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/api/cart": {
+      "get": {
+        "tags": ["cart"],
+        "summary": "Get all cart data",
+        "responses": {
+          "200": {
+            "description": "A list of cart data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cart"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cart/add": {
+      "post": {
+        "tags": ["cart"],
+        "summary": "Add cart data",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userID": {
+                    "type": "integer"
+                  },
+                  "total": {
+                    "type": "integer"
+                  }
+                },
+                "required": ["userID", "total"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The newly created cart",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cart"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cart/delete/{id}": {
+      "delete": {
+        "tags": ["cart"],
+        "summary": "Delete cart data by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the cart to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart deleted successfully"
+          },
+          "404": {
+            "description": "Cart not found"
+          }
+        }
+      }
+    },
+    "/api/cartitem": {
+      "get": {
+        "tags": ["cart-item"],
+        "summary": "Get all cart-item data",
+        "responses": {
+          "200": {
+            "description": "A list of cart-items",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cartitem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cartitem/id/{id}": {
+      "get": {
+        "tags": ["cart-item"],
+        "summary": "Get cart-item data by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the cart-item to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A cart-item data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cartitem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cartitem/add": {
+      "post": {
+        "tags": ["cart-item"],
+        "summary": "Add cart-item data",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cartID": {
+                    "type": "integer"
+                  },
+                  "productID": {
+                    "type": "integer"
+                  },
+                  "quantity": {
+                    "type": "integer"
+                  }
+                },
+                "required": ["cartID", "productID", "quantity"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The newly created cart-item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cartitem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cartitem/delete/{id}": {
+      "delete": {
+        "tags": ["cart-item"],
+        "summary": "Delete cart-item by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the cart-item to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart-item deleted successfully"
+          },
+          "404": {
+            "description": "Cart-item not found"
+          }
+        }
+      }
+    },
+    "/api/cartitem/update/{id}": {
+      "put": {
+        "tags": ["cart-item"],
+        "summary": "Update cart-item by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the cart-item to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "productID": {
+                    "type": "integer"
+                  },
+                  "quantity": {
+                    "type": "integer"
+                  }
+                },
+                "required": ["productID", "quantity"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated cart-item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cartitem"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, object invalid"
+          },
+          "404": {
+            "description": "Cart-item not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "cart": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "userID": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
+      "cartitem": {
+        "type": "object",
+        "properties": {
+          "cartID": {
+            "type": "integer"
+          },
+          "productID": {
+            "type": "integer"
+          },
+          "quantity": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}
