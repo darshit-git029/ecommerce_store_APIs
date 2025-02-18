@@ -1,6 +1,7 @@
 const db = require("../models");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { propfind } = require("../routes/product.route");
 
 // User login authentication
 exports.getUserLogin = async (req, res) => {
@@ -22,7 +23,6 @@ exports.getUserLogin = async (req, res) => {
         }
 
         // Generate JWT token using email
-
 
         const token = jwt.sign({ email: email }, process.env.SECRET_KEY, { expiresIn: process.env.EXPIRES_TIME });
 
@@ -64,13 +64,13 @@ exports.authenticateToken = (req, res, next) => {
     const token = req.cookies.token;
 
     if (!token) {
-        return res.status(401).json({message:"Login Please!",success:false});
+        return res.status(401).json({ message: "Login Please!", success: false });
     }
 
     jwt.verify(token, process.env.SECRET_KEY, (err, decodedToken) => {
         if (err) {
             console.error(err);
-            return res.status(403).json({ message: 'Token verification failed' ,success:false});
+            return res.status(403).json({ message: 'Token verification failed', success: false });
         }
         req.user = decodedToken;
 

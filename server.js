@@ -29,10 +29,11 @@ const cartRouter = require('./routes/cart.route')
 app.use('/api', productRouter)
 app.use('/api', categoryRouter)
 app.use('/api/users', userRouter)
-app.use('/api',cartRouter)
+app.use('/api', cartRouter)
 
 //define port 
-const port = process.env.port;
+const port = 3000;
+console.log(port);
 
 //port listening
 app.listen(port, () => {
